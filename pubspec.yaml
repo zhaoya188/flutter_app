@@ -25,6 +25,7 @@ dependencies:
   fluttertoast: ^2.1.2
   http: ^0.12.0
   webview_flutter:
+    path: ./webview_flutter
 
 dev_dependencies:
   flutter_test:

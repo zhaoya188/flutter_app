@@ -5,18 +5,21 @@ import 'list.dart';
 import 'gesture.dart';
 import 'myhtttp.dart';
 import 'relative-layout.dart';
+import 'mywebview.dart';
 
 const String PAGE_DEF = "默认页面";
 const String PAGE_LIST = "列表";
 const String PAGE_GESTURE = "画板";
 const String PAGE_HTTP = "HTTP";
 const String PAGE_RELATIVE = "Relative布局";
+const String PAGE_WEBVIEW = "Webview";
 
 const String PAGE_URL_DEF = "/def";
 const String PAGE_URL_LIST = "/list";
 const String PAGE_URL_GESTURE = "/gesture";
 const String PAGE_URL_HTTP = "/http";
 const String PAGE_URL_RELATIVE = "/relative";
+const String PAGE_URL_WEBVIEW = "/Webview";
 
 void main() => runApp(MaterialApp(
       title: "Valu Test",
@@ -28,6 +31,7 @@ void main() => runApp(MaterialApp(
         PAGE_URL_GESTURE: (BuildContext context) => SignatureApp(),
         PAGE_URL_HTTP: (BuildContext context) => HttpPage(),
         PAGE_URL_RELATIVE: (BuildContext context) => RelativeView(),
+        PAGE_URL_WEBVIEW: (BuildContext context) => WebViewExample(),
       },
     ));
 
@@ -53,6 +57,8 @@ class ValiHomePage extends StatelessWidget {
               pressed: () => _gotoPage(context, PAGE_URL_HTTP)),
           CustomButton(PAGE_RELATIVE,
               pressed: () => _gotoPage(context, PAGE_URL_RELATIVE)),
+          CustomButton(PAGE_WEBVIEW,
+              pressed: () => _gotoPage(context, PAGE_URL_WEBVIEW)),
         ],
         mainAxisAlignment: MainAxisAlignment.center,
       )),
