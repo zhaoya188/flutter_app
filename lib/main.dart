@@ -6,6 +6,7 @@ import 'gesture.dart';
 import 'myhtttp.dart';
 import 'relative-layout.dart';
 import 'mywebview.dart';
+import 'html.dart';
 
 const String PAGE_DEF = "默认页面";
 const String PAGE_LIST = "列表";
@@ -13,6 +14,7 @@ const String PAGE_GESTURE = "画板";
 const String PAGE_HTTP = "HTTP";
 const String PAGE_RELATIVE = "Relative布局";
 const String PAGE_WEBVIEW = "Webview";
+const String PAGE_HTML = "HTML";
 
 const String PAGE_URL_DEF = "/def";
 const String PAGE_URL_LIST = "/list";
@@ -20,6 +22,7 @@ const String PAGE_URL_GESTURE = "/gesture";
 const String PAGE_URL_HTTP = "/http";
 const String PAGE_URL_RELATIVE = "/relative";
 const String PAGE_URL_WEBVIEW = "/Webview";
+const String PAGE_URL_HTML = "/html";
 
 void main() => runApp(MaterialApp(
       title: "Valu Test",
@@ -32,36 +35,59 @@ void main() => runApp(MaterialApp(
         PAGE_URL_HTTP: (BuildContext context) => HttpPage(),
         PAGE_URL_RELATIVE: (BuildContext context) => RelativeView(),
         PAGE_URL_WEBVIEW: (BuildContext context) => WebViewExample(),
+        PAGE_URL_HTML: (BuildContext context) => HtmlExample(),
       },
     ));
 
-class ValiHomePage extends StatelessWidget {
+class ValiHomePage extends StatefulWidget {
+  @override
+  State createState() => HomeState();
+}
+
+class _LifeSate with WidgetsBindingObserver {
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    print(state.toString());
+    Fluttertoast.showToast(
+        msg: state.toString(),
+        bgcolor: "#" + Colors.blueAccent.value.toRadixString(16));
+  }
+}
+
+class HomeState extends State<ValiHomePage> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(_LifeSate());
+  }
+
   @override
   Widget build(BuildContext context) {
-    WidgetsBinding.instance.addObserver(_LifeSate());
-
     return Scaffold(
       appBar: AppBar(
         title: Text("Main page"),
       ),
       body: Center(
-          child: Column(
-        children: <Widget>[
-          CustomButton(PAGE_DEF,
-              pressed: () => _startForResult(context, PAGE_URL_DEF)),
-          CustomButton(PAGE_LIST,
-              pressed: () => _gotoPage(context, PAGE_URL_LIST)),
-          CustomButton(PAGE_GESTURE,
-              pressed: () => _gotoPage(context, PAGE_URL_GESTURE)),
-          CustomButton(PAGE_HTTP,
-              pressed: () => _gotoPage(context, PAGE_URL_HTTP)),
-          CustomButton(PAGE_RELATIVE,
-              pressed: () => _gotoPage(context, PAGE_URL_RELATIVE)),
-          CustomButton(PAGE_WEBVIEW,
-              pressed: () => _gotoPage(context, PAGE_URL_WEBVIEW)),
-        ],
-        mainAxisAlignment: MainAxisAlignment.center,
-      )),
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            CustomButton(PAGE_DEF,
+                pressed: () => _startForResult(context, PAGE_URL_DEF)),
+            CustomButton(PAGE_LIST,
+                pressed: () => _gotoPage(context, PAGE_URL_LIST)),
+            CustomButton(PAGE_GESTURE,
+                pressed: () => _gotoPage(context, PAGE_URL_GESTURE)),
+            CustomButton(PAGE_HTTP,
+                pressed: () => _gotoPage(context, PAGE_URL_HTTP)),
+            CustomButton(PAGE_RELATIVE,
+                pressed: () => _gotoPage(context, PAGE_URL_RELATIVE)),
+            CustomButton(PAGE_WEBVIEW,
+                pressed: () => _gotoPage(context, PAGE_URL_WEBVIEW)),
+            CustomButton(PAGE_HTML,
+                pressed: () => _gotoPage(context, PAGE_URL_HTML)),
+          ],
+        ),
+      ),
     );
   }
 
@@ -79,15 +105,5 @@ class ValiHomePage extends StatelessWidget {
         // ios
         bgcolor: "#e74c3c",
         textcolor: '#ffffff');
-  }
-}
-
-class _LifeSate with WidgetsBindingObserver {
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    print(state.toString());
-    Fluttertoast.showToast(
-        msg: state.toString(),
-        bgcolor: "#" + Colors.blueAccent.value.toRadixString(16));
   }
 }

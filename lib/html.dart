@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:flutter_html_view/flutter_html_view.dart';
 
-void main() => runApp(MaterialApp(home: WebViewExample()));
+void main() => runApp(MaterialApp(home: HtmlExample()));
 
 class SampleMenu extends StatelessWidget {
   const SampleMenu();
@@ -31,7 +31,7 @@ class SampleMenu extends StatelessWidget {
   }
 }
 
-class WebViewExample extends StatelessWidget {
+class HtmlExample extends StatelessWidget {
   static const String htmlText = "<html>\n" +
       "<head>\n" +
       "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\" />\n" +
@@ -60,14 +60,20 @@ class WebViewExample extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Flutter WebView example'),
+        title: const Text('Flutter HTML example'),
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         actions: <Widget>[const SampleMenu()],
       ),
-      body: const WebView(
-        initialUrl: 'https://flutter.io',
-//        initialUrl: htmlText,
-        javaScriptMode: JavaScriptMode.unrestricted,
+      body: ListView(
+        children: <Widget>[HtmlView(
+          data: htmlText,
+          baseURL: "", // optional, type String
+          onLaunchFail: (url) {
+            // optional, type Function
+            print("launch $url failed");
+          },
+        ),
+        ],
       ),
     );
   }

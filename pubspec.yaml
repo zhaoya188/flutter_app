@@ -26,6 +26,7 @@ dependencies:
   http: ^0.12.0
   webview_flutter:
     path: ./webview_flutter
+  flutter_html_view: "^0.5.10"
 
 dev_dependencies:
   flutter_test:

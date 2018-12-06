@@ -135,9 +135,7 @@ class _DefPageState extends State<DefPage> {
             Padding(
               padding: EdgeInsets.all(10.0),
             ),
-            Text(
-              "剩余电量：$_batteryLevel"
-            ),
+            Text("剩余电量：$_batteryLevel"),
           ],
         ),
       ),
@@ -182,13 +180,16 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return new RaisedButton(
-      onPressed: pressed,
-      child: new Text(
-        label,
-        style: TextStyle(color: Colors.white),
+    return Align(
+      alignment: Alignment.center,
+      child: RaisedButton(
+        onPressed: pressed,
+        child: new Text(
+          label,
+          style: TextStyle(color: Colors.white),
+        ),
+        color: Colors.green,
       ),
-      color: Colors.green,
     );
   }
 }
