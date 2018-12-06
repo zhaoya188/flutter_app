@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_html_view/flutter_html_view.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:html/dom.dart' as dom;
 
 void main() => runApp(MaterialApp(home: HtmlExample()));
 
@@ -65,14 +66,28 @@ class HtmlExample extends StatelessWidget {
         actions: <Widget>[const SampleMenu()],
       ),
       body: ListView(
-        children: <Widget>[HtmlView(
-          data: htmlText,
-          baseURL: "", // optional, type String
-          onLaunchFail: (url) {
-            // optional, type Function
-            print("launch $url failed");
-          },
-        ),
+        children: <Widget>[
+          // from https://github.com/Sub6Resources/flutter_html
+          Html(
+            data: htmlText,
+            //Optional parameters:
+            padding: EdgeInsets.all(8.0),
+            backgroundColor: Colors.white70,
+            defaultTextStyle: TextStyle(fontFamily: 'serif'),
+            onLinkTap: (url) {
+              // open url in a webview
+            },
+            customRender: (node, children) {
+              if(node is dom.Element) {
+                switch(node.localName) {
+//                  case "video": return Chewie(...);
+//                  case "custom_tag": return CustomWidget(...);
+                  case "video": return Text("【假装是Video】");
+                  case "custom_tag": return Text("【假装是custom_tag】");
+                }
+              }
+            },
+          ),
         ],
       ),
     );
