@@ -7,6 +7,7 @@ import 'myhtttp.dart';
 import 'relative-layout.dart';
 import 'mywebview.dart';
 import 'html.dart';
+import 'mywebview2.dart';
 
 const String PAGE_DEF = "默认页面";
 const String PAGE_LIST = "列表";
@@ -15,6 +16,7 @@ const String PAGE_HTTP = "HTTP";
 const String PAGE_RELATIVE = "Relative布局";
 const String PAGE_WEBVIEW = "Webview";
 const String PAGE_HTML = "HTML";
+const String PAGE_WEBVIEW2 = "WebView2"; // use flutter_inappbrowser
 
 const String PAGE_URL_DEF = "/def";
 const String PAGE_URL_LIST = "/list";
@@ -23,6 +25,7 @@ const String PAGE_URL_HTTP = "/http";
 const String PAGE_URL_RELATIVE = "/relative";
 const String PAGE_URL_WEBVIEW = "/Webview";
 const String PAGE_URL_HTML = "/html";
+const String PAGE_URL_WEBVIEW2 = "/Webview2";
 
 void main() => runApp(MaterialApp(
       title: "Valu Test",
@@ -36,6 +39,7 @@ void main() => runApp(MaterialApp(
         PAGE_URL_RELATIVE: (BuildContext context) => RelativeView(),
         PAGE_URL_WEBVIEW: (BuildContext context) => WebViewExample(),
         PAGE_URL_HTML: (BuildContext context) => HtmlExample(),
+        PAGE_URL_WEBVIEW2: (BuildContext context) => WebView2App(),
       },
     ));
 
@@ -85,6 +89,8 @@ class HomeState extends State<ValiHomePage> {
                 pressed: () => _gotoPage(context, PAGE_URL_WEBVIEW)),
             CustomButton(PAGE_HTML,
                 pressed: () => _gotoPage(context, PAGE_URL_HTML)),
+            CustomButton(PAGE_WEBVIEW2,
+                pressed: () => _gotoPage(context, PAGE_URL_WEBVIEW2)),
           ],
         ),
       ),

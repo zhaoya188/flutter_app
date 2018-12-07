@@ -28,6 +28,7 @@ dependencies:
     path: ./webview_flutter
   # flutter_html_view: "^0.5.10" # Not Good, 样式支持太少
   flutter_html: ^0.8.2  # Not Good, 不支持 Base64 的 img 标签
+  flutter_inappbrowser: ^0.5.51
 
 dev_dependencies:
   flutter_test:
