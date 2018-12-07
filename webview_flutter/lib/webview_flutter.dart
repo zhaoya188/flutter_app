@@ -31,6 +31,7 @@ class WebView extends StatefulWidget {
     Key key,
     this.onWebViewCreated,
     this.initialUrl,
+    this.initialData, // -- vali add
     this.javaScriptMode = JavaScriptMode.disabled,
     this.gestureRecognizers,
   })  : assert(javaScriptMode != null),
@@ -52,6 +53,9 @@ class WebView extends StatefulWidget {
 
   /// The initial URL to load.
   final String initialUrl;
+
+  /// The initial URL to load. --- vali add
+  final String initialData;
 
   /// Whether JavaScript execution is enabled.
   final JavaScriptMode javaScriptMode;
@@ -137,21 +141,27 @@ class _WebViewState extends State<WebView> {
 }
 
 class _CreationParams {
-  _CreationParams({this.initialUrl, this.settings});
+  _CreationParams({
+    this.initialUrl,
+    this.initialData, // -- vali add
+    this.settings});
 
   static _CreationParams fromWidget(WebView widget) {
     return _CreationParams(
       initialUrl: widget.initialUrl,
+      initialData: widget.initialData,
       settings: _WebSettings.fromWidget(widget),
     );
   }
 
   final String initialUrl;
+  final String initialData; // -- Vali add
   final _WebSettings settings;
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'initialUrl': initialUrl,
+      'initialData': initialData, // -- vali add
       'settings': settings.toMap(),
     };
   }
@@ -207,6 +217,16 @@ class WebViewController {
 
   Future<void> _updateSettings(Map<String, dynamic> update) async {
     return _channel.invokeMethod('updateSettings', update);
+  }
+
+  /// Loads the specified String Data. --- Vali Add
+  ///
+  /// `htmlString` must not be null.
+  ///
+  Future<void> loadDataWithBaseURL(String htmlString) async {
+    print("ZYYYYY flutter => loadDataWithBaseURL");
+    assert(htmlString != null);
+    return _channel.invokeMethod('loadDataWithBaseURL', htmlString);
   }
 }
 

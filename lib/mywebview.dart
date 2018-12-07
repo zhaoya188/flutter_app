@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
+import 'dart:async';
 
-void main() => runApp(MaterialApp(home: WebViewExample()));
+//void main() => runApp(MaterialApp(home: WebViewExample()));
 
 class SampleMenu extends StatelessWidget {
   const SampleMenu();
@@ -16,22 +17,38 @@ class SampleMenu extends StatelessWidget {
             duration: Duration(seconds: 2),
           ),
         );
+        if (value == "loadUrl") {
+          print("flutter: =====> loadUrl");
+          if (_WebViewState.controller != null) {
+            _WebViewState.controller.loadUrl("https://flutter.io");
+          }
+        } else if (value == "loadData") {
+          print("flutter: =====> loadData");
+          _WebViewState.controller.loadDataWithBaseURL(_WebViewState.htmlText);
+        }
       },
       itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
             const PopupMenuItem<String>(
-              value: 'Item 1',
-              child: Text('Item 1'),
+              value: 'loadUrl',
+              child: Text('在线数据'),
             ),
             const PopupMenuItem<String>(
-              value: 'Item 2',
-              child: Text('Item 2'),
+              value: 'loadData',
+              child: Text('HTML数据'),
             ),
           ],
     );
   }
 }
 
-class WebViewExample extends StatelessWidget {
+class WebViewExample extends StatefulWidget {
+  @override
+  State createState() => _WebViewState();
+}
+
+class _WebViewState extends State<WebViewExample>{
+  static bool _loading = false;
+  static WebViewController controller;
   static const String htmlText = "<html>\n" +
       "<head>\n" +
       "<meta name=\"viewport\" content=\"initial-scale=1.0, user-scalable=no\" />\n" +
@@ -57,6 +74,12 @@ class WebViewExample extends StatelessWidget {
       "</html>";
 
   @override
+  void initState() {
+    super.initState();
+    _loading = false;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -64,11 +87,45 @@ class WebViewExample extends StatelessWidget {
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         actions: <Widget>[const SampleMenu()],
       ),
-      body: const WebView(
-        initialUrl: 'https://flutter.io',
-//        initialUrl: htmlText,
-        javaScriptMode: JavaScriptMode.unrestricted,
-      ),
+      body: _getBody(),
     );
   }
+
+  _getBody() {
+    //_waitForDone();
+    return _loading
+        ? Center(
+        child: CircularProgressIndicator(
+          semanticsLabel: "lebal",
+          semanticsValue: "value",
+          backgroundColor: Colors.yellow,
+        ))
+        : const WebView(
+      initialUrl: 'https://flutter.io',
+//      initialData: htmlText,
+      onWebViewCreated: _webViewCreatedCallback,
+      javaScriptMode: JavaScriptMode.unrestricted,
+    );
+  }
+
+  static _webViewCreatedCallback(WebViewController controller) {
+    print("YIMI flutter =====> _webViewCreatedCallback in...");
+    _loading = false;
+    _WebViewState.controller = controller;
+    //controller.loadDataWithBaseURL(htmlText);
+  }
+
+  _waitForDone() async {
+    Timer.periodic(Duration(microseconds: 500), (Timer timer) {
+      if(_loading) {
+        timer.cancel();
+        setState(() {
+          _loading = false;
+        });
+      }
+    });
+  }
 }
+
+
+

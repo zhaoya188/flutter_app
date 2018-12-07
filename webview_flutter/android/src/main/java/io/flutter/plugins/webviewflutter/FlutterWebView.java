@@ -1,15 +1,18 @@
 package io.flutter.plugins.webviewflutter;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.webkit.WebView;
+
+import java.util.Map;
+
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
 import io.flutter.plugin.common.MethodChannel.Result;
 import io.flutter.plugin.platform.PlatformView;
-import java.util.Map;
 
 public class FlutterWebView implements PlatformView, MethodCallHandler {
   private final WebView webView;
@@ -18,9 +21,17 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
   @SuppressWarnings("unchecked")
   FlutterWebView(Context context, BinaryMessenger messenger, int id, Map<String, Object> params) {
     webView = new WebView(context);
+    Log.d("ZYYYY", "FlutterWebView: init params =======>" + params.toString());
+    String url = null; // -- Vali add
     if (params.containsKey("initialUrl")) {
-      String url = (String) params.get("initialUrl");
+      url = (String) params.get("initialUrl");
       webView.loadUrl(url);
+    }
+    // -- Vali add
+    if (url == null && params.containsKey("initialData")) {
+      String htmlString = (String) params.get("initialData");
+      Log.d("ZYYYY", "FlutterWebView: init loadDataWithBaseURL...=======>" + htmlString);
+      webView.loadDataWithBaseURL(null, htmlString, "text/html; charset=UTF-8", null, null);
     }
     applySettings((Map<String, Object>) params.get("settings"));
     methodChannel = new MethodChannel(messenger, "plugins.flutter.io/webview_" + id);
@@ -41,6 +52,9 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
       case "updateSettings":
         updateSettings(methodCall, result);
         break;
+      case "loadDataWithBaseURL":  // Vali Add
+        loadDataWithBaseURL(methodCall, result);
+        break;
       default:
         result.notImplemented();
     }
@@ -49,6 +63,14 @@ public class FlutterWebView implements PlatformView, MethodCallHandler {
   private void loadUrl(MethodCall methodCall, Result result) {
     String url = (String) methodCall.arguments;
     webView.loadUrl(url);
+    result.success(null);
+  }
+
+  // Vali add
+  private void loadDataWithBaseURL(MethodCall methodCall, Result result) {
+    String htmlText = (String) methodCall.arguments;
+    Log.d("ZYYYY", "loadDataWithBaseURL: " + htmlText);
+    webView.loadDataWithBaseURL(null, htmlText, "text/html; charset=UTF-8", null, null);
     result.success(null);
   }
 
