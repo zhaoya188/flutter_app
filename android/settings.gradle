@@ -13,3 +13,8 @@ plugins.each { name, path ->
     include ":$name"
     project(":$name").projectDir = pluginDirectory
 }
+
+// add2app
+rootProject.name = 'android_generated'
+setBinding(new Binding([gradle: this]))
+evaluate(new File('include_flutter.groovy'))
