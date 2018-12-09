@@ -53,8 +53,7 @@ class _LifeSate with WidgetsBindingObserver {
   void didChangeAppLifecycleState(AppLifecycleState state) {
     print(state.toString());
     Fluttertoast.showToast(
-        msg: state.toString(),
-        bgcolor: "#" + Colors.blueAccent.value.toRadixString(16));
+        msg: state.toString(),);
   }
 }
 
@@ -107,9 +106,7 @@ class HomeState extends State<ValiHomePage> {
         msg: "返回数据：$_msg",
         toastLength: Toast.LENGTH_SHORT,
         gravity: ToastGravity.BOTTOM,
-        timeInSecForIos: 1,
-        // ios
-        bgcolor: "#e74c3c",
-        textcolor: '#ffffff');
+        timeInSecForIos: 1 // ios
+    );
   }
 }
