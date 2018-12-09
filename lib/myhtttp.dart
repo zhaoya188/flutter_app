@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
 import 'dart:convert';
+
+Widget httpWidget = MaterialApp(
+  title: "HTTP",
+  home: HttpPage(),
+);
 
 class HttpPage extends StatefulWidget {
   HttpPage({Key key}) : super(key: key);

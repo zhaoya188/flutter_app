@@ -56,4 +56,6 @@ class SignatureApp extends StatelessWidget {
       body: new Signature());
 }
 
-void main() => runApp(new MaterialApp(home: new SignatureApp()));
+void main() => runApp(signaturePage);
+
+Widget signaturePage = MaterialApp(home: new SignatureApp());
