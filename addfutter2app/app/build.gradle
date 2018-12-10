@@ -14,6 +14,10 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            // TODO: Add your own signing config for the release build.
+            // Signing with the debug keys for now, so `./gradlew assembleRelease` works.
+            signingConfig signingConfigs.debug
         }
     }
     buildToolsVersion '28.0.2'
