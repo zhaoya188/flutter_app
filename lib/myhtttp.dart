@@ -28,9 +28,9 @@ class _HttpPageState extends State<HttpPage> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      appBar: new AppBar(
-        title: new Text("HTTP数据"),
-      ),
+      //appBar: new AppBar(
+      //  title: new Text("HTTP数据"),
+      //),
       body: getBody(),
     );
   }
