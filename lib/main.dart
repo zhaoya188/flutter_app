@@ -10,6 +10,7 @@ import 'html.dart';
 import 'mywebview2.dart';
 import 'dart:ui';
 import 'blur.dart';
+import 'screenshot.dart';
 
 const String PAGE_MAIN = "Main";
 const String PAGE_DEF = "默认页面";
@@ -21,6 +22,7 @@ const String PAGE_WEBVIEW = "Webview";
 const String PAGE_HTML = "HTML";
 const String PAGE_WEBVIEW2 = "WebView2"; // use flutter_inappbrowser
 const String PAGE_BLUR_BACK_DROP = "高斯模糊";
+const String PAGE_SCREENSHOT = "Screenshot";
 
 const String PAGE_URL_MAIN = "/";
 const String PAGE_URL_DEF = "/def";
@@ -32,6 +34,7 @@ const String PAGE_URL_WEBVIEW = "/Webview";
 const String PAGE_URL_HTML = "/html";
 const String PAGE_URL_WEBVIEW2 = "/Webview2";
 const String PAGE_URL_BLUR_BACK_DROP = "/blur_backdrop";
+const String PAGE_URL_SCREENSHOT = "/Screenshot";
 
 //void main() => runApp(mainApp); // route: null or "/"
 
@@ -51,6 +54,7 @@ Widget mainApp = MaterialApp(
     PAGE_URL_HTML: (BuildContext context) => HtmlExample(),
     PAGE_URL_WEBVIEW2: (BuildContext context) => WebView2App(),
     PAGE_URL_BLUR_BACK_DROP: (BuildContext context) => BlurWidget(),
+    PAGE_URL_SCREENSHOT: (BuildContext context) => ScreenPage(),
   },
 );
 
@@ -66,6 +70,7 @@ Widget _widgetForRoute(String route) {
     case PAGE_URL_HTML: return HtmlExample();
     case PAGE_URL_WEBVIEW2: return WebView2App();
     case PAGE_URL_BLUR_BACK_DROP: return BlurWidget();
+    case PAGE_URL_SCREENSHOT: return ScreenPage();
     default:
       return Center(
         child: Text('Unknown route: $route', textDirection: TextDirection.ltr),
@@ -122,6 +127,8 @@ class HomeState extends State<ValiHomePage> {
                 pressed: () => _gotoPage(context, PAGE_URL_WEBVIEW2)),
             CustomButton(PAGE_BLUR_BACK_DROP,
                 pressed: () => _gotoPage(context, PAGE_URL_BLUR_BACK_DROP)),
+            CustomButton(PAGE_SCREENSHOT,
+                pressed: () => _gotoPage(context, PAGE_URL_SCREENSHOT)),
           ],
         ),
       ),
