@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
-import 'dart:async';
+import 'screenshot.dart';
 
 //void main() => runApp(MaterialApp(home: WebViewExample()));
 
@@ -25,6 +25,9 @@ class SampleMenu extends StatelessWidget {
         } else if (value == "loadData") {
           print("flutter: =====> loadData");
           _WebViewState.controller.loadDataWithBaseURL(_WebViewState.htmlText);
+        } else if (value == "screenshot") {
+          print("flutter: =====> screenshot");
+          ScreenState.showScreenShotDialog(context, _WebViewState.key);
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
@@ -35,6 +38,10 @@ class SampleMenu extends StatelessWidget {
             const PopupMenuItem<String>(
               value: 'loadData',
               child: Text('HTML数据'),
+            ),
+            const PopupMenuItem<String>(
+              value: 'screenshot',
+              child: Icon(Icons.print),
             ),
           ],
     );
@@ -47,6 +54,7 @@ class WebViewExample extends StatefulWidget {
 }
 
 class _WebViewState extends State<WebViewExample>{
+  static GlobalKey key = new GlobalKey();
   static bool _loading = false;
   static WebViewController controller;
   static const String htmlText = "<html>\n" +
@@ -81,18 +89,19 @@ class _WebViewState extends State<WebViewExample>{
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return RepaintBoundary(
+      key: key,
+      child: Scaffold(
       appBar: AppBar(
         title: const Text('Flutter WebView example'),
         // This drop down menu demonstrates that Flutter widgets can be shown over the web view.
         actions: <Widget>[const SampleMenu()],
       ),
       body: _getBody(),
-    );
+    ),);
   }
 
   _getBody() {
-    //_waitForDone();
     return _loading
         ? Center(
         child: CircularProgressIndicator(
@@ -115,16 +124,6 @@ class _WebViewState extends State<WebViewExample>{
     //controller.loadDataWithBaseURL(htmlText);
   }
 
-  _waitForDone() async {
-    Timer.periodic(Duration(microseconds: 500), (Timer timer) {
-      if(_loading) {
-        timer.cancel();
-        setState(() {
-          _loading = false;
-        });
-      }
-    });
-  }
 }
 
 

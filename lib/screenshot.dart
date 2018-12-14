@@ -13,17 +13,17 @@ class ScreenPage extends StatelessWidget {
 }
 
 class ScreenWidget extends StatefulWidget {
-  _ScreenState createState() => new _ScreenState();
+  ScreenState createState() => new ScreenState();
 }
 
-class _ScreenState extends State<ScreenWidget> {
+class ScreenState extends State<ScreenWidget> {
   GlobalKey globalKey = new GlobalKey();
-  List<int> screenShotBytes;
+  Uint8List screenShotBytes;
 
   /// 截图boundary，并且返回图片的二进制数据。
   /// @deprecated
   ///
-  Future<Uint8List> _capturePng() async {
+  /*Future<Uint8List> _capturePng() async {
     RenderRepaintBoundary boundary =
         globalKey.currentContext.findRenderObject();
     ui.Image image = await boundary.toImage();
@@ -31,10 +31,11 @@ class _ScreenState extends State<ScreenWidget> {
     ByteData byteData = await image.toByteData(format: ui.ImageByteFormat.png);
     Uint8List pngBytes = byteData.buffer.asUint8List();
     return pngBytes;
-  }
+  }*/
 
   /// 优化后的版本
-  Future<Uint8List> _capturePngOptimized() async {
+  /// @return Uint8List of JPG
+  static Future<Uint8List> capturePngOptimized(GlobalKey globalKey) async {
     RenderRepaintBoundary boundary =
         globalKey.currentContext.findRenderObject();
 
@@ -53,14 +54,28 @@ class _ScreenState extends State<ScreenWidget> {
     // 把pixels转回Image并且编码成JPG (200ms左右)
     gimage.Image newImage =
         new gimage.Image.fromBytes(image.width, image.height, pixels);
-    screenShotBytes = gimage.encodeJpg(newImage);
+    Uint8List screenShotBytes = gimage.encodeJpg(newImage);
 
     if (screenShotBytes != null) {
-      setState(() {});
       print("YIMI-flutter: ===> " + screenShotBytes.toString());
     }
 
     return screenShotBytes;
+  }
+
+  static showScreenShotDialog(BuildContext context, GlobalKey globalKey) async {
+    Uint8List screenBytes = await ScreenState.capturePngOptimized(globalKey);
+    if (screenBytes != null) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return new SimpleDialog(
+            title: Text("ScreenShot"),
+            children: <Widget>[Image.memory(screenBytes)],
+          );
+        },
+      );
+    }
   }
 
   ///
@@ -72,15 +87,15 @@ class _ScreenState extends State<ScreenWidget> {
         //globalKey用于识别
         key: globalKey,
         child: Scaffold(
-      appBar: AppBar(
-        title: Text("Screen Shot"),
-      ),
-      body: RepaintBoundary(
-        /// open this to capture the Body only!
-        //key: globalKey,
-        child: _getBody(),
-      ),
-    ));
+          appBar: AppBar(
+            title: Text("Screen Shot"),
+          ),
+          body: RepaintBoundary(
+            /// open this to capture the Body only!
+            //key: globalKey,
+            child: _getBody(),
+          ),
+        ));
   }
 
   _getBody() {
@@ -94,7 +109,7 @@ class _ScreenState extends State<ScreenWidget> {
                 alignment: Alignment.center,
                 child: RaisedButton(
                   child: Text("截屏", textDirection: TextDirection.ltr),
-                  onPressed: _capturePngOptimized,
+                  onPressed: _onPressed,
                 )),
             Align(
               alignment: Alignment.center,
@@ -110,5 +125,12 @@ class _ScreenState extends State<ScreenWidget> {
         ),
       ),
     );
+  }
+
+  _onPressed() async {
+    screenShotBytes = await capturePngOptimized(globalKey);
+    if (screenShotBytes != null) {
+      setState(() {});
+    }
   }
 }
