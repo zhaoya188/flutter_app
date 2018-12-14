@@ -17,16 +17,6 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 
 public class FlutterContainerActivity extends FlutterActivity {
 
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        String route = getIntent().getStringExtra(FlutterFragment.ARG_ROUTE);
-//
-//        FlutterView flutterView = Flutter.createView(
-//                this, getLifecycle(), route); // main view (null or '/')
-//        setContentView(flutterView);
-//    }
-
     private static final String TAG = "YIMI-Flutter";
 
     String sharedText;
@@ -37,6 +27,7 @@ public class FlutterContainerActivity extends FlutterActivity {
         GeneratedPluginRegistrant.registerWith(this);
 
         registerMethodChannel();
+        Utils.addScreenShotView(this);
 
     } // onCreate
 
