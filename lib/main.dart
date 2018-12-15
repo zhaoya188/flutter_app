@@ -9,8 +9,11 @@ import 'mywebview.dart';
 import 'html.dart';
 import 'mywebview2.dart';
 import 'dart:ui';
+import 'dart:typed_data';
 import 'blur.dart';
 import 'screenshot.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter/rendering.dart';
 
 const String PAGE_MAIN = "Main";
 const String PAGE_DEF = "默认页面";
@@ -36,9 +39,19 @@ const String PAGE_URL_WEBVIEW2 = "/Webview2";
 const String PAGE_URL_BLUR_BACK_DROP = "/blur_backdrop";
 const String PAGE_URL_SCREENSHOT = "/Screenshot";
 
+const String CHANNEL_ID_HYBRID = "com.yimi.flutter_app/hybrid";
+const String CHANNEL_METHOD_SCREENSHOT = "screenshot";
+
+GlobalKey globalKey = new GlobalKey();
+
 //void main() => runApp(mainApp); // route: null or "/"
 
-void main() => runApp(_widgetForRoute(window.defaultRouteName));
+void main() => runApp(
+  RepaintBoundary(
+    key: globalKey,
+    child: _widgetForRoute(window.defaultRouteName),
+  ),
+);
 
 Widget mainApp = MaterialApp(
   title: "Vali Test",
@@ -93,6 +106,8 @@ class _LifeSate with WidgetsBindingObserver {
 }
 
 class HomeState extends State<ValiHomePage> {
+  static const platform = const MethodChannel(CHANNEL_ID_HYBRID);
+
   @override
   void initState() {
     super.initState();
@@ -101,6 +116,16 @@ class HomeState extends State<ValiHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    // register method channel
+    platform.setMethodCallHandler((MethodCall call) async {
+      if (CHANNEL_METHOD_SCREENSHOT == call.method) {
+        print("flutter===>msg: ${call.method}");
+        Uint8List bytes = await ScreenState.capturePngOptimized(globalKey);
+        return bytes;
+      }
+      return null;
+    });
+
     return Scaffold(
       appBar: AppBar(
         title: Text("Main page"),
