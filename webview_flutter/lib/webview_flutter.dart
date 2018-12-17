@@ -3,6 +3,7 @@
 // found in the LICENSE file.
 
 import 'dart:async';
+import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
@@ -227,6 +228,11 @@ class WebViewController {
     print("ZYYYYY flutter => loadDataWithBaseURL");
     assert(htmlString != null);
     return _channel.invokeMethod('loadDataWithBaseURL', htmlString);
+  }
+
+  /// return Future<Uint8List>
+  Future<dynamic> screenshot() async {
+    return _channel.invokeMethod('screenshot', null);
   }
 }
 

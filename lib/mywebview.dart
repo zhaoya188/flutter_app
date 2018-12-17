@@ -27,7 +27,11 @@ class SampleMenu extends StatelessWidget {
           _WebViewState.controller.loadDataWithBaseURL(_WebViewState.htmlText);
         } else if (value == "screenshot") {
           print("flutter: =====> screenshot");
-          ScreenState.showScreenShotDialog(context, _WebViewState.key);
+          ScreenState.showScreenShotDialogWithNativeBytes(context,
+              _WebViewState.key, _WebViewState.controller.screenshot(),
+              _WebViewState.statusBarHeight);
+          //ScreenState.showScreenShotDialog(context,
+          //    _WebViewState.key);
         }
       },
       itemBuilder: (BuildContext context) => <PopupMenuItem<String>>[
@@ -41,7 +45,7 @@ class SampleMenu extends StatelessWidget {
             ),
             const PopupMenuItem<String>(
               value: 'screenshot',
-              child: Icon(Icons.print),
+              child: Text('ScreenShot'),
             ),
           ],
     );
@@ -54,6 +58,7 @@ class WebViewExample extends StatefulWidget {
 }
 
 class _WebViewState extends State<WebViewExample>{
+  static double statusBarHeight;
   static GlobalKey key = new GlobalKey();
   static bool _loading = false;
   static WebViewController controller;
@@ -89,6 +94,8 @@ class _WebViewState extends State<WebViewExample>{
 
   @override
   Widget build(BuildContext context) {
+    statusBarHeight = MediaQuery.of(context).padding.top;
+
     return RepaintBoundary(
       key: key,
       child: Scaffold(

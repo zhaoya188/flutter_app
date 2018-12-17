@@ -120,7 +120,7 @@ class HomeState extends State<ValiHomePage> {
     platform.setMethodCallHandler((MethodCall call) async {
       if (CHANNEL_METHOD_SCREENSHOT == call.method) {
         print("flutter===>msg: ${call.method}");
-        Uint8List bytes = await ScreenState.capturePngOptimized(globalKey);
+        Uint8List bytes = await ScreenState.captureJpgOptimized(globalKey);
         return bytes;
       }
       return null;

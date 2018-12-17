@@ -37,9 +37,9 @@ public class Utils {
             Activity activity, byte[] data, int left, int top, int height, int width) {
         Log.d(TAG, "mergeScreenShot: " + left + ", " + top + ", " + height + ", " + width);
         // flutterBitmap
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        Bitmap flutterBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, options);
-        /* cut 1px bottom of the flutter view, because of flutter's bug:
+        Bitmap flutterBitmap = BitmapFactory.decodeByteArray(data, 0, data.length, null);
+        /* todo: Remove me if the flutter's bug was fixed.
+         * cut off 1px bottom of the flutter view, because of flutter's bug:
          * "take screenshot for flutter view inside normal android Activity (non-FlutterActivity),
          * will get a black line in the bottom of it."
          */
