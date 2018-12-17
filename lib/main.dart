@@ -14,6 +14,7 @@ import 'blur.dart';
 import 'screenshot.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/rendering.dart';
+import 'appbar.dart';
 
 const String PAGE_MAIN = "Main";
 const String PAGE_DEF = "默认页面";
@@ -26,6 +27,7 @@ const String PAGE_HTML = "HTML";
 const String PAGE_WEBVIEW2 = "WebView2"; // use flutter_inappbrowser
 const String PAGE_BLUR_BACK_DROP = "高斯模糊";
 const String PAGE_SCREENSHOT = "Screenshot";
+const String PAGE_CUSTOM_APPBAR = "Custom AppBar";
 
 const String PAGE_URL_MAIN = "/";
 const String PAGE_URL_DEF = "/def";
@@ -38,6 +40,7 @@ const String PAGE_URL_HTML = "/html";
 const String PAGE_URL_WEBVIEW2 = "/Webview2";
 const String PAGE_URL_BLUR_BACK_DROP = "/blur_backdrop";
 const String PAGE_URL_SCREENSHOT = "/Screenshot";
+const String PAGE_URL_CUSTOM_APPBAR = "/custom_appbar";
 
 const String CHANNEL_ID_HYBRID = "com.yimi.flutter_app/hybrid";
 const String CHANNEL_METHOD_SCREENSHOT = "screenshot";
@@ -68,6 +71,7 @@ Widget mainApp = MaterialApp(
     PAGE_URL_WEBVIEW2: (BuildContext context) => WebView2App(),
     PAGE_URL_BLUR_BACK_DROP: (BuildContext context) => BlurWidget(),
     PAGE_URL_SCREENSHOT: (BuildContext context) => ScreenPage(),
+    PAGE_URL_CUSTOM_APPBAR: (BuildContext context) => CustomAppBar(),
   },
 );
 
@@ -84,6 +88,7 @@ Widget _widgetForRoute(String route) {
     case PAGE_URL_WEBVIEW2: return WebView2App();
     case PAGE_URL_BLUR_BACK_DROP: return BlurWidget();
     case PAGE_URL_SCREENSHOT: return ScreenPage();
+    case PAGE_URL_CUSTOM_APPBAR: return CustomAppBar();
     default:
       return Center(
         child: Text('Unknown route: $route', textDirection: TextDirection.ltr),
@@ -154,6 +159,8 @@ class HomeState extends State<ValiHomePage> {
                 pressed: () => _gotoPage(context, PAGE_URL_BLUR_BACK_DROP)),
             CustomButton(PAGE_SCREENSHOT,
                 pressed: () => _gotoPage(context, PAGE_URL_SCREENSHOT)),
+            CustomButton(PAGE_CUSTOM_APPBAR,
+                pressed: () => _gotoPage(context, PAGE_URL_CUSTOM_APPBAR)),
           ],
         ),
       ),
