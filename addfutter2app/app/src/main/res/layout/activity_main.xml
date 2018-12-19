@@ -16,25 +16,36 @@
             android:layout_height="21dp"
             android:layout_margin="8dp"
             android:text="This is a native view"
-            app:layout_constraintBottom_toTopOf="@+id/switchview"
+            app:layout_constraintBottom_toTopOf="@+id/spinner"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.1" />
 
-        <Switch
-            android:id="@+id/switchview"
+        <TextView
+            android:id="@+id/textView_choice"
+            android:layout_marginTop="14dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:text="Type: "
+            app:layout_constraintBottom_toTopOf="@+id/btn_main"
+            app:layout_constraintEnd_toStartOf="@+id/spinner"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/textView"
+            app:layout_constraintVertical_bias="0.1"/>
+
+        <Spinner
+            android:id="@+id/spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Open Pure FlutterView"
+            android:text="FlutterView Type"
             app:layout_constraintBottom_toTopOf="@+id/btn_main"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView_choice"
             app:layout_constraintTop_toBottomOf="@id/textView"
-            app:layout_constraintVertical_bias="0.1"
-            tools:layout_editor_absoluteX="140dp"
-            tools:layout_editor_absoluteY="28dp" />
+            app:layout_constraintVertical_bias="0.1" />
 
         <Button
             android:id="@+id/btn_main"
@@ -47,7 +58,7 @@
             app:layout_constraintBottom_toTopOf="@+id/btn_http"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switchview"
+            app:layout_constraintTop_toBottomOf="@+id/spinner"
             app:layout_constraintVertical_bias="0.1" />
 
         <Button

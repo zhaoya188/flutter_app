@@ -4,13 +4,22 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.FrameLayout;
-import android.widget.Switch;
+import android.widget.Spinner;
+import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import io.flutter.facade.Flutter;
 import io.flutter.facade.FlutterFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "YIMI-Flutter-Demo";
+
     static final String PAGE_URL_MAIN = "/";
     static final String PAGE_URL_DEF = "/def";
     static final String PAGE_URL_LIST = "/list";
@@ -21,8 +30,19 @@ public class MainActivity extends AppCompatActivity {
     static final String PAGE_URL_HTML = "/html";
     static final String PAGE_URL_WEBVIEW2 = "/Webview2";
 
-    Switch switchView;
+    static final String FLUTTER_VIEW_TYPE_PURE = "Pure FlutterView";
+    static final String FLUTTER_VIEW_TYPE_NATIVE = "Native nested FlutterView";
+    static final String FLUTTER_VIEW_TYPE_FRAGMENT = "Native nested FlutterFragment";
+
+    static final int FLUTTER_VIEW_TYPE_ID_PURE = 0;
+    static final int FLUTTER_VIEW_TYPE_ID_NATIVE = 1;
+    static final int FLUTTER_VIEW_TYPE_ID_FRAGMENT = 2;
+
     boolean embeddedFlutterViewAdded;
+
+    private Spinner spinner;
+    private List<String> data_list;
+    private ArrayAdapter<String> arr_adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,13 +57,44 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        switchView = (Switch) findViewById(R.id.switchview);
+        spinner = (Spinner) findViewById(R.id.spinner);
+        data_list = new ArrayList<String>();
+        data_list.add(FLUTTER_VIEW_TYPE_PURE);
+        data_list.add(FLUTTER_VIEW_TYPE_NATIVE);
+        data_list.add(FLUTTER_VIEW_TYPE_FRAGMENT);
+        arr_adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, data_list);
+        //设置样式
+        arr_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //加载适配器
+        spinner.setAdapter(arr_adapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
     }
 
     void openFlutterPage(String route) {
-        Class clazz = switchView.isChecked()
-                ? FlutterContainerActivity.class // Pure Flutter View
-                : FlutterNativeActivity.class; // Hybrid View
+        Class clazz = null;
+        switch ((int) spinner.getSelectedItemId()) {
+            case FLUTTER_VIEW_TYPE_ID_PURE:
+                clazz = FlutterContainerActivity.class;
+                break;
+            case FLUTTER_VIEW_TYPE_ID_NATIVE:
+                clazz = FlutterNativeActivity.class;
+                break;
+            case FLUTTER_VIEW_TYPE_ID_FRAGMENT:
+                clazz = FlutterFragmentActivity.class;
+                break;
+            default:
+                Toast.makeText(this, "error choice: " + spinner.getSelectedItemId(),
+                        Toast.LENGTH_SHORT).show();
+                break;
+        }
         Intent intent = new Intent(this, clazz);
         intent.putExtra(FlutterFragment.ARG_ROUTE, route);
         startActivity(intent);
