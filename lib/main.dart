@@ -175,6 +175,8 @@ class HomeState extends State<ValiHomePage> {
                 pressed: () => _gotoPage(context, PAGE_URL_CUSTOM_APPBAR)),
             CustomButton(PAGE_MULTI_WEBVIEW,
                 pressed: () => _gotoPage(context, PAGE_URL_MULTI_WEBVIEW)),
+            CustomButton("Show SerfaceView",
+                pressed: () => _showSurfaceView()),
           ],
         ),
       ),
@@ -193,5 +195,9 @@ class HomeState extends State<ValiHomePage> {
         gravity: ToastGravity.BOTTOM,
         timeInSecForIos: 1 // ios
     );
+  }
+
+  void _showSurfaceView() {
+    platform.invokeMethod("showSurfaceView");
   }
 }

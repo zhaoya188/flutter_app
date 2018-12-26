@@ -1,5 +1,6 @@
 package com.yimi.addflutter2app;
 
+import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -18,17 +19,20 @@ import io.flutter.plugins.GeneratedPluginRegistrant;
 public class FlutterContainerActivity extends FlutterActivity {
 
     private static final String TAG = "YIMI-Flutter";
+    private static final String CHANNEL_ID_HYBRID = "com.yimi.flutter_app/hybrid";
 
     String sharedText;
+    Context context;
+    SurfaceViewHelper surfaceViewHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         GeneratedPluginRegistrant.registerWith(this);
 
+        context = this;
         registerMethodChannel();
         Utils.addScreenShotView(this);
-
     } // onCreate
 
     void registerMethodChannel() {
@@ -56,6 +60,19 @@ public class FlutterContainerActivity extends FlutterActivity {
                         }
                     }
                 });
+
+        new MethodChannel(getFlutterView(), CHANNEL_ID_HYBRID)
+                .setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+                    @Override
+                    public void onMethodCall(MethodCall methodCall, MethodChannel.Result result) {
+                        if (methodCall.method.contentEquals("showSurfaceView")) {
+                            showSurfaceView();
+                            result.success(null);
+                        } else {
+                            result.notImplemented();
+                        }
+                    }
+                });
     }
 
     private int getBatteryLevel() {
@@ -71,5 +88,20 @@ public class FlutterContainerActivity extends FlutterActivity {
         }
         Log.d(TAG, "getBatteryLevel: " + batteryLevel);
         return batteryLevel;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (surfaceViewHelper != null) {
+            surfaceViewHelper.close();
+        }
+    }
+
+    private void showSurfaceView() {
+        if (surfaceViewHelper == null) {
+            surfaceViewHelper = new SurfaceViewHelper(context);
+        }
+        surfaceViewHelper.open();
     }
 }

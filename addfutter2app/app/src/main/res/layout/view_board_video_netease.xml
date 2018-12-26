@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    >
+
+    <FrameLayout
+        android:id="@+id/user_local_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@null"
+        />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:id="@+id/user_remote_views"
+        >
+        <FrameLayout
+            android:id="@+id/user_remote_view_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            />
+
+        <FrameLayout
+            android:id="@+id/user_remote_view_second"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+    </LinearLayout>
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:id="@+id/btn_video_zoom"
+        android:src="@drawable/camera_btn_fullscreen"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="2dp"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_video_switch"
+        android:src="@drawable/camera_btn_switch"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/btn_video_zoom"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_video_meiyan"
+        android:src="@drawable/camera_btn_beauty_on"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@id/btn_video_switch"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_video_close"
+        android:src="@drawable/btn_video_close"
+        android:layout_margin="5dp"
+        />
+
+
+</RelativeLayout>
