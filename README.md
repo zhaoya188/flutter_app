@@ -1,6 +1,9 @@
 # flutter_app
 An exercise for flutter.
 
+# build
+- run flutter: ./build.sh
+- build android: ./build_android.sh
 
 # Contents
 - Gaussian blur with flutter BackdropFilter.（[高斯模糊](https://github.com/zhaoya188/FlutterBlurDemo)）
