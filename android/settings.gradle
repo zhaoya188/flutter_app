@@ -14,7 +14,8 @@ plugins.each { name, path ->
     project(":$name").projectDir = pluginDirectory
 }
 
+/// remove to avoid flutter crash
 // add2app
-rootProject.name = 'android_generated'
-setBinding(new Binding([gradle: this]))
-evaluate(new File('include_flutter.groovy'))
+//rootProject.name = 'android_generated'
+//setBinding(new Binding([gradle: this]))
+//evaluate(new File('include_flutter.groovy'))
