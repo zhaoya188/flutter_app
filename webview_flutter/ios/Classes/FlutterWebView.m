@@ -51,8 +51,11 @@
     NSDictionary<NSString*, id>* settings = args[@"settings"];
     [self applySettings:settings];
     NSString* initialUrl = args[@"initialUrl"];
+      NSString* initialData = args[@"initialData"];
     if (initialUrl) {
       [self loadUrl:initialUrl];
+    } else if (initialData) {
+        [_webView loadHTMLString:initialData baseURL:nil];
     }
   }
   return self;
@@ -67,7 +70,11 @@
     [self onUpdateSettings:call result:result];
   } else if ([[call method] isEqualToString:@"loadUrl"]) {
     [self onLoadUrl:call result:result];
-  } else {
+  } else if ([[call method] isEqualToString:@"loadDataWithBaseURL"]) {
+    [self loadDataWithBaseURL:call result:result];
+  } else if ([[call method] isEqualToString:@"screenshot"]) {
+      [self screenshot:call result:result];
+  }  else {
     result(FlutterMethodNotImplemented);
   }
 }
@@ -86,6 +93,30 @@
   } else {
     result(nil);
   }
+}
+
+- (void)loadDataWithBaseURL:(FlutterMethodCall*)call result:(FlutterResult)result {
+   NSString* htmlStr = [call arguments];
+    [_webView loadHTMLString:htmlStr baseURL:nil];
+    result(nil);
+}
+
+- (void)screenshot:(FlutterMethodCall*)call result:(FlutterResult)result {
+    UIImage *image = [self screenShotView:_webView];
+    if (!image) {
+        result([FlutterError errorWithCode:@"screenshot_failed"
+                                   message:@"Screenshot failed"
+                                   details:@"Screenshot failed"]);
+    } else {
+        NSData *imgData = UIImagePNGRepresentation(image);
+        if (!imgData) {
+            result([FlutterError errorWithCode:@"screenshot_failed"
+                                       message:@"Screenshot failed"
+                                       details:@"Screenshot failed"]);
+        } else {
+            result(imgData);
+        }
+    }
 }
 
 - (void)applySettings:(NSDictionary<NSString*, id>*)settings {
@@ -121,6 +152,25 @@
   NSURLRequest* req = [NSURLRequest requestWithURL:nsUrl];
   [_webView loadRequest:req];
   return true;
+}
+    
+- (UIImage *)screenShotView:(UIView *)view {
+    UIImage *imageRet = nil;
+    
+    if (view) {
+        if(UIGraphicsBeginImageContextWithOptions) {
+            UIGraphicsBeginImageContextWithOptions(view.frame.size, NO, 0.0);
+        } else {
+            UIGraphicsBeginImageContext(view.frame.size);
+        }
+        
+        //获取图像
+        [view.layer renderInContext:UIGraphicsGetCurrentContext()];
+        imageRet = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+    }
+    
+    return imageRet;
 }
 
 @end
