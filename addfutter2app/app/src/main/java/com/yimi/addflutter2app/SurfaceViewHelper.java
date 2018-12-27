@@ -54,6 +54,9 @@ public class SurfaceViewHelper {
     }
 
     public void close() {
+        if (surfaceView == null) {
+            return;
+        }
         mWindowManager.removeViewImmediate(surfaceViewContainer);
         surfaceView.stop();
         surfaceView = null;

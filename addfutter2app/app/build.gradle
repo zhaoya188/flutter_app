@@ -32,7 +32,4 @@ dependencies {
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     // add for `add2app`
     implementation project(':flutter')
-    implementation project(':flutter_inappbrowser')
-    implementation project(':fluttertoast')
-    implementation project(':webview_flutter')
 }
